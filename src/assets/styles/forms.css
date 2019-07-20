@@ -1,0 +1,30 @@
+.f-button {
+    height: 36px;
+    border-radius: 3px;
+    line-height: 32px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    color: #fff;
+    text-align: center;
+    padding: 0 12px;
+    text-transform: uppercase;
+}
+.f-button.primary {
+    background: #3a84ff;
+}
+
+.f-input {
+    border-radius: 4px;
+    /*border: solid 1px #D6D6D6;*/
+    height: 36px;
+    color: #1b253a;
+    padding: 0 10px;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 300;
+    box-shadow: 0 2px 4px 0 rgba(232, 232, 232, 0.53);
+}
+.f-input::placeholder {
+    color: #94979b;
+    opacity: 0.6;
+}
