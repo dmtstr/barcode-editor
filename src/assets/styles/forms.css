@@ -1,16 +1,26 @@
 .f-button {
     height: 36px;
     border-radius: 3px;
-    line-height: 32px;
+    line-height: 36px;
     font-size: 14px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     color: #fff;
     text-align: center;
-    padding: 0 12px;
+    padding: 0 16px;
     text-transform: uppercase;
 }
 .f-button.primary {
     background: #3a84ff;
+}
+.f-button.primary:hover {
+    background: #3477e6;
+}
+.f-button.default {
+    box-shadow: none;
+    color: #3a84ff;
+}
+.f-button.default:hover {
+    text-decoration: underline;
 }
 
 .f-input {

@@ -11,7 +11,7 @@ export default {
     list () {
         return {
             method: 'GET',
-            url: '/items/products'
+            url: '/items/editor'
         }
     },
 

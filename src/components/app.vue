@@ -7,14 +7,12 @@
     #app {
         height: 100%;
     }
-    #app .l-header {
-        z-index: 2;
-    }
     #app .l-section {
         z-index: 1;
+        height: 100%;
     }
     #app .l-toasts {
-        z-index: 3;
+        z-index: 2;
     }
 
 </style>
@@ -26,9 +24,8 @@
 -->
 
 <template>
-    <div id="app" class="u-col">
-        <layout-header />
-        <layout-section class="u-flex" />
+    <div id="app">
+        <layout-section />
         <layout-toasts />
     </div>
 </template>
@@ -42,7 +39,6 @@
 <script>
 
 
-    import layoutHeader from '@/components/layout/header.vue'
     import layoutSection from '@/components/layout/section.vue'
     import layoutToasts from '@/components/layout/toasts.vue'
 
@@ -50,7 +46,6 @@
     export default {
 
         components: {
-            layoutHeader,
             layoutSection,
             layoutToasts
         }

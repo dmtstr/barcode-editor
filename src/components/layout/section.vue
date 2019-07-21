@@ -4,6 +4,9 @@
 
 <style>
 
+    .l-section {
+        position: relative;
+    }
     .l-section > * {
         height: 100%;
     }

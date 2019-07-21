@@ -9,33 +9,43 @@
         background: #FFFFFF;
         box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.03);
         padding: 16px 24px;
-        display: flex;
     }
-    .l-header > * {
-        flex: 1;
+
+
+
+    .l-header .icon svg {
+        width: 24px;
+        height: 24px;
+        fill: #94979b;
+        margin: 4px;
+    }
+    .l-header .icon a {
+        float: left;
+    }
+    .l-header .icon a svg {
+        fill: #2979FF;
     }
 
     .l-header .title {
-        text-align: center;
+        padding: 0 24px;
         line-height: 32px;
         font-size: 16px;
-        font-weight: 300;
-        color: #94979b;
+        /*font-weight: 300;*/
+        color: #1b253a;
     }
 
-    .l-header .icon {
-        width: 32px;
-        height: 32px;
-        padding: 4px;
-    }
+
     .l-header a.icon {
         fill: #2979FF;
     }
 
-    .l-header .button {
-        width: 72px;
+    .l-header .buttons a {
+        float: left;
         text-align: center;
         margin-left: 12px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 12px;
     }
 
 
@@ -49,31 +59,18 @@
 -->
 
 <template>
-    <div class="l-header u-clear" v-show="show">
+    <div class="l-header u-clear">
 
-
-        <!-- icons -->
-
-        <div class="u-clear">
-
-            <router-link class="icon u-fl" v-show="display" to="/" >
-                <icon-back />
-            </router-link>
-
-            <div class="icon" v-show="dashboard">
-                <icon-dashboard />
-            </div>
-
+        <div class="icon u-fl">
+            <slot name="icon" />
         </div>
 
-        <div class="title">
-            {{title}}
+        <div class="buttons u-clear u-fr">
+            <slot name="buttons" />
         </div>
 
-        <div class="u-clear">
-            <a href="/logout" class="button u-fr f-button info" v-show="dashboard">Logout</a>
-            <a class="button u-fr f-button info" v-show="display">Edit</a>
-            <a class="button u-fr f-button danger" v-show="display">Delete</a>
+        <div class="title u-ff">
+            <slot name="title" />
         </div>
 
     </div>
@@ -88,21 +85,12 @@
 <script>
 
     import {mapState} from 'vuex';
-    import iconBack from '@/assets/icons/back.svg'
-    import iconEdit from '@/assets/icons/edit.svg'
-    import iconDelete from '@/assets/icons/delete.svg'
-    import iconDashboard from '@/assets/icons/dashboard.svg'
-    import iconBarcode from '@/assets/icons/barcode.svg'
 
 
     export default {
 
         components: {
-            iconBack,
-            iconEdit,
-            iconDelete,
-            iconDashboard,
-            iconBarcode
+
         },
 
         computed: {
