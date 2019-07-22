@@ -2,9 +2,9 @@
 // Imports
 // ------------------
 
-import routeLogin from '@/components/routes/login.vue'
+import routeLogin from '@/components/routes/login/index.vue'
 import routeDashboard from '@/components/routes/dashboard/index.vue'
-import routeDisplay from '@/components/routes/display.vue'
+import routeTemplate from '@/components/routes/template/index.vue'
 
 
 
@@ -14,19 +14,23 @@ import routeDisplay from '@/components/routes/display.vue'
 
 export default [
     {
-        name: 'login',
         path: '/login',
         component: routeLogin,
         meta: {public: true}
     },
     {
-        name: 'dashboard',
         path: '/',
         component: routeDashboard
     },
     {
-        name: 'display',
+        path: '/new',
+        component: routeTemplate,
+        meta: {
+            type: 'fresh'
+        }
+    },
+    {
         path: '/:id',
-        component: routeDisplay
+        component: routeTemplate
     }
 ];

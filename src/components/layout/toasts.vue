@@ -18,7 +18,6 @@
         padding: 24px;
         border-radius: 6px;
         color: #ffffff;
-        background: #3a84ff;
     }
 
 
@@ -54,6 +53,15 @@
     }
 
 
+    /* types */
+
+    .l-toasts .toast.success {
+        background: #3a84ff;
+    }
+    .l-toasts .toast.error {
+        background: #e11212;
+    }
+
 </style>
 
 
@@ -64,7 +72,7 @@
 
 <template>
     <div class="l-toasts">
-        <div class="toast" v-for="toast in toasts" @mouseenter="toast.stop()" @mouseleave="toast.play()">
+        <div class="toast" v-for="toast in toasts" :class="toast.type" @mouseenter="toast.stop()" @mouseleave="toast.play()">
 
             <div class="u-clear">
                 <a class="u-fr close" @click="toast.hide()"><icon-close /></a>

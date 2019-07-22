@@ -15,24 +15,33 @@ export default {
         }
     },
 
-    get () {
+    get (id) {
         return {
             method: 'GET',
-            url: '/items/products'
+            url: '/items/editor/' + id
         }
     },
 
-    update () {
+    update (data) {
         return {
-            method: 'GET',
-            url: '/items/products'
+            method: 'PATCH',
+            url: '/items/editor/' + data.id,
+            data: data
         }
     },
 
-    remove () {
+    create (data) {
         return {
-            method: 'GET',
-            url: '/items/products'
+            method: 'POST',
+            url: '/items/editor',
+            data: data
+        }
+    },
+
+    remove (id) {
+        return {
+            method: 'DELETE',
+            url: '/items/editor/' + id
         }
     }
 

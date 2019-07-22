@@ -77,17 +77,17 @@
 
         <!-- create -->
 
-        <a class="tile create u-fl">
+        <router-link class="tile create u-fl" to="/new">
             <div class="image">
                 <icon-plus class="u-center" />
             </div>
             <p>Create new</p>
-        </a>
+        </router-link>
 
 
         <!-- template -->
 
-        <router-link class="tile template u-fl" v-for="template in templates" :to="`/${template.id}`">
+        <router-link class="tile template u-fl" v-for="template in templates" :to="`/${template.id}`" :key="template.id">
             <div class="image">
                 <img src="/template.png"/>
             </div>

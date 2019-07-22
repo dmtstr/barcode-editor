@@ -13,7 +13,7 @@
 -->
 
 <template>
-    <layout-header>
+    <layout-header :loading="loading">
 
 
         <!-- icon -->
@@ -56,7 +56,11 @@
         components: {
             layoutHeader,
             iconDashboard
-        }
+        },
+
+        props: [
+            'loading'
+        ]
 
     }
 

@@ -4,40 +4,58 @@
 
 <style>
 
+
+    /* main */
+
     .l-header {
+        position: relative;
         height: 64px;
         background: #FFFFFF;
         box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.03);
         padding: 16px 24px;
+        z-index: 10;
     }
 
 
+    /* icon */
 
+    .l-header .icon {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+    }
     .l-header .icon svg {
-        width: 24px;
-        height: 24px;
+        width: 100%;
+        height: 100%;
         fill: #94979b;
-        margin: 4px;
-    }
-    .l-header .icon a {
-        float: left;
     }
     .l-header .icon a svg {
         fill: #2979FF;
     }
 
+
+    /* icon */
+
     .l-header .title {
         padding: 0 24px;
         line-height: 32px;
         font-size: 16px;
-        /*font-weight: 300;*/
         color: #1b253a;
     }
-
-
-    .l-header a.icon {
-        fill: #2979FF;
+    .l-header .title input {
+        height: 32px;
+        max-width: 400px;
+        border-bottom: 1px solid #dbdfe9;
     }
+    .l-header .title input:disabled {
+        border-bottom-color: transparent;
+    }
+    .l-header .title input:focus {
+        border-bottom-color: #2979FF;
+    }
+
+
+    /* buttons */
 
     .l-header .buttons a {
         float: left;
@@ -48,6 +66,12 @@
         font-size: 12px;
     }
 
+
+    /* loader */
+
+    .l-header .loader {
+        top: 100%;
+    }
 
 
 </style>
@@ -73,6 +97,8 @@
             <slot name="title" />
         </div>
 
+        <ui-loader class="loader" v-show="loading" />
+
     </div>
 </template>
 
@@ -84,31 +110,18 @@
 
 <script>
 
-    import {mapState} from 'vuex';
+    import uiLoader from '@/components/ui/loader.vue'
 
 
     export default {
 
         components: {
-
+            uiLoader
         },
 
-        computed: {
-
-            ...mapState('header', [
-                'title',
-                'show'
-            ]),
-
-            dashboard () {
-                return this.$route.name === 'dashboard'
-            },
-
-            display () {
-                return this.$route.name === 'display'
-            }
-
-        }
+        props: [
+            'loading'
+        ]
 
     }
 
