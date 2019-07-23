@@ -2,8 +2,26 @@
     Styles
 -->
 
-<style>
-    
+<style scoped>
+
+    .toolbar {
+        width: 80px;
+        background: #ffffff;
+        box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);
+    }
+    .toolbar a {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        margin: 32px 24px;
+    }
+    .toolbar a svg {
+        fill: #94979b;
+    }
+    .toolbar a:hover svg {
+        fill: #2979FF;
+    }
+
 </style>
 
 
@@ -14,7 +32,7 @@
 
 <template>
     <div class="toolbar">
-        <a @click="action('text')">
+        <a>
             <icon-text />
         </a>
         <a>
@@ -26,7 +44,7 @@
         <a>
             <icon-line />
         </a>
-        <a>
+        <a @click="$emit('action', 'rect')">
             <icon-rect />
         </a>
     </div>
@@ -56,14 +74,6 @@
             iconBarcode,
             iconLine,
             iconRect
-        },
-
-        methods: {
-
-            action (name) {
-                this.$emit('action', name)
-            }
-
         }
 
 

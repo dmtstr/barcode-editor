@@ -4,36 +4,10 @@
 
 <style>
 
-
-
-    .r-template .toolbar {
+    .r-template .bar {
         position: relative;
         z-index: 1;
-        width: 80px;
-        background: #ffffff;
-        box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);
     }
-    .r-template .toolbar a {
-        width: 32px;
-        height: 32px;
-        padding: 4px;
-        margin: 32px 24px;
-    }
-    .r-template .toolbar a svg {
-        fill: #94979b;
-    }
-    .r-template .toolbar a:hover svg {
-        fill: #2979FF;
-    }
-
-    .r-template .aside {
-        position: relative;
-        z-index: 1;
-        width: 320px;
-        background: #ffffff;
-        box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);
-    }
-
     .r-template .canvas {
         font-size: 0;
         padding: 32px;
@@ -47,14 +21,12 @@
         display: inline-block;
         vertical-align: middle;
     }
-    .r-template .canvas canvas {
+    .r-template .canvas > * {
         display: inline-block;
         vertical-align: middle;
         background: #ffffff;
         box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);
     }
-
-
 
 </style>
 
@@ -80,25 +52,14 @@
                      @name="name"/>
 
 
-
-
-
-
         <!-- content -->
 
-        <div class="u-flex u-row">
-
-            <item-toolbar v-show="editing"/>
-
+        <div class="u-flex u-row" v-if="template">
+            <item-toolbar class="bar" v-show="editing" @action="action"/>
             <div class="canvas u-flex">
-
-                <canvas width="800" height="600"></canvas>
-
+                <item-canvas :template="template" ref="canvas" @activate="activate"/>
             </div>
-
-            <div class="aside"></div>
-
-
+            <item-aside class="bar" :active="active" @update="update" />
         </div>
 
 
@@ -113,34 +74,29 @@
 
 <script>
 
-    import Axios from '@/common/modules/axios'
-    import {mapState, mapActions} from 'vuex'
 
+    // imports
+
+    import {mapState, mapActions} from 'vuex'
+    import Axios from '@/common/modules/axios'
+    import Config from '@/common/configs/canvas'
     import itemHeader from './header.vue'
     import itemToolbar from './toolbar.vue'
+    import itemCanvas from './canvas.vue'
+    import itemAside from './aside.vue'
 
 
-    const defaults = {
-        name: 'New template',
-        width: 800,
-        height: 600,
-        content: []
-    };
 
+
+    // exports
 
     export default {
 
         components: {
             itemHeader,
-            itemToolbar
-        },
-
-        computed: {
-
-            fresh () {
-                return this.$route.meta.type === 'fresh';
-            }
-
+            itemToolbar,
+            itemCanvas,
+            itemAside
         },
 
         data () {
@@ -148,8 +104,21 @@
                 editing: false,
                 loading: false,
                 cache: null,
-                template: null
+                template: null,
+                active: null
             }
+        },
+
+        computed: {
+
+            fresh () {
+                return this.$route.meta.type === 'fresh';
+            },
+
+            canvas () {
+                return this.$refs.canvas;
+            },
+
         },
 
         methods: {
@@ -158,11 +127,11 @@
                 'success'
             ]),
 
-
             init () {
                 if (this.fresh) {
                     this.editing = true;
-                    this.template = Object.assign({}, defaults);
+                    this.template = Object.assign({}, Config.template);
+                    this.active = this.template;
                 }
                 else {
                     this.loading = 'Loading...';
@@ -174,7 +143,6 @@
                         .catch(error => {
                             error && this.$router.replace('/');
                         })
-
                 }
             },
 
@@ -194,13 +162,9 @@
             },
 
             cancel () {
-                if (this.fresh) {
-                    this.$router.push('/');
-                }
-                else {
-                    this.editing = false;
-                    this.template = this.cache;
-                }
+                if (this.fresh) return this.$router.push('/');
+                this.editing = false;
+                this.template = this.cache;
             },
 
             edit () {
@@ -211,52 +175,31 @@
             remove () {
                 this.loading = 'Deleting...';
                 Axios.call('remove', this.template.id)
-                    .then(() => {
-                        this.success('The template has been successfully deleted');
-                    })
-                    .finally(() => {
-                        this.$router.replace('/');
-                    })
+                    .then(() => this.success('The template has been successfully deleted'))
+                    .finally(() => this.$router.replace('/'));
             },
 
             name (value) {
                 this.template.name = value;
-            }
+            },
 
+            action (type) {
+                this.canvas.add(Config[type]());
+            },
+
+            activate (object) {
+                this.active = object;
+            },
+
+            update (prop, value) {
+                this.canvas.update(prop, value);
+            }
 
         },
 
+
         mounted () {
-
-            console.log('here');
             this.init();
-
-//            this[this.type].init();
-
-//            init();
-
-
-//            if (this.$route.name === 'template') {
-////                this.set({edit: false});
-////
-////                Axios.call('get', this.$route.params.id)
-////                    .then(response => {
-////                        console.log(response)
-////                    })
-////                    .catch(error => {
-////                        this.$router.replace('/');
-////                    })
-//            }
-//            else {
-//                this.set({
-//                    edit: false,
-//                    template: []
-//                });
-//
-//                // edit true
-//                // set blank template
-//            }
-
         }
 
 
