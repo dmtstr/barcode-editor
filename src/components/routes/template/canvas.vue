@@ -61,6 +61,10 @@
 
         methods: {
 
+            ...mapMutations('template', [
+                'setCanvas'
+            ]),
+
             ...mapActions('template', [
                 'activate',
                 'on'
@@ -130,6 +134,7 @@
 
             this.on(['prop', this.prop]);
             this.on(['rotate', this.rotate]);
+            this.setCanvas(this.canvas);
 
         }
 

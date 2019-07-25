@@ -27,7 +27,7 @@
 
         <template v-slot:title>
             <span v-show="loading">{{loading}}</span>
-            <input type="text" v-show="!loading" :value="template && template.name" :disabled="!editing" @input="name($event.target.value)"/>
+            <input type="text" v-show="!loading" :value="template && template.name" :disabled="!editing" @input="setName($event.target.value)"/>
         </template>
 
 
@@ -88,7 +88,7 @@
         methods: {
 
             ...mapMutations('template', [
-                'name'
+                'setName'
             ]),
 
             ...mapActions({

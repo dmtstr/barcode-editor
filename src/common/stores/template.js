@@ -16,24 +16,29 @@ const defaults = {
 export default {
 
     namespaced: true,
+
+
+    // state
+
     state: Object.assign({}, defaults),
 
 
+    // mutations
+
     mutations: {
 
-        name ({template}, value) {
+        setName ({template}, value) {
             template.name = value;
         },
 
-        width ({template, canvas}, value) {
-            template.width = value;
-            canvas.setWidth(value);
+        setCanvas (state, canvas) {
+            state.canvas = canvas;
         }
-
-
 
     },
 
+
+    // actions
 
     actions: {
 
@@ -60,6 +65,7 @@ export default {
         create ({state}, callback) {
             state.editing = false;
             state.loading = 'Saving...';
+            state.template.content = state.canvas.toJSON();
             return Axios.call('create', state.template)
                 .then(response => {
                     state.template.id = response.data.data.id;
@@ -76,6 +82,7 @@ export default {
         update ({state}, callback) {
             state.editing = false;
             state.loading = 'Saving...';
+            state.template.content = state.canvas.toJSON();
             return Axios.call('update', state.template)
                 .then(callback)
                 .catch(() => {
@@ -118,9 +125,6 @@ export default {
             const name = data.shift();
             state.events[name].forEach(event => event.apply(null, data));
         }
-
-
-
 
 
     }
