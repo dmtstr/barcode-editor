@@ -4,6 +4,9 @@
 
 <style>
 
+
+    /* main */
+
     .r-login {
         display: flex;
         flex-direction: column;
@@ -12,21 +15,27 @@
         padding: 24px 24px 128px 24px;
     }
 
+
+    /* form */
+
     .r-login form {
         min-width: 240px;
-
     }
     .r-login form p {
         text-align: center;
-        margin: 32px;
+        margin-bottom: 32px;
     }
-    .r-login form input {
+    .r-login form .input {
         margin-bottom: 16px;
+        border: none;
+        border-radius: 4px;
+        padding: 0 12px;
     }
-    .r-login form input[type=submit] {
+    .r-login form .button {
         width: 120px;
         margin: 32px auto 0 auto;
     }
+
 
 </style>
 
@@ -43,19 +52,19 @@
 
             <p>Sign in to continue</p>
 
-            <input class="f-input"
+            <input class="input f-input u-tile"
                    type="email"
                    placeholder="Email"
                    required
                    v-model="model.email"/>
 
-            <input class="f-input"
+            <input class="input f-input u-tile"
                    type="password"
                    placeholder="Password"
                    required
                    v-model="model.password"/>
 
-            <input class="f-button primary"
+            <input class="button f-button primary"
                    type="submit"
                    value="Sign in"/>
 

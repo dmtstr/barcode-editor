@@ -25,8 +25,8 @@
 
 <template>
     <div id="app">
-        <layout-section />
-        <layout-toasts />
+        <layout-section class="l-section" />
+        <layout-toasts class="l-toasts" />
     </div>
 </template>
 

@@ -14,7 +14,7 @@
 
 <template>
 
-    <input class="input"
+    <input class="f-input"
            type="number"
            step="any"
            :value="valid"

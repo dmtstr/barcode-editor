@@ -7,9 +7,6 @@
     .l-section {
         position: relative;
     }
-    .l-section > * {
-        height: 100%;
-    }
 
 </style>
 
@@ -20,9 +17,7 @@
 -->
 
 <template>
-    <div class="l-section">
-        <router-view />
-    </div>
+    <router-view class="l-section"></router-view>
 </template>
 
 

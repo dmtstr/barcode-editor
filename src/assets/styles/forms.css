@@ -1,3 +1,5 @@
+/* button */
+
 .f-button {
     height: 36px;
     border-radius: 3px;
@@ -23,18 +25,19 @@
     text-decoration: underline;
 }
 
+
+/* input */
+
 .f-input {
-    border-radius: 4px;
-    /*border: solid 1px #D6D6D6;*/
     height: 36px;
-    color: #1b253a;
-    padding: 0 10px;
-    background: #ffffff;
+    border: 1px solid #D6D6D6;
+    border-radius: 2px;
+    color: #313131;
     font-size: 14px;
-    font-weight: 300;
-    box-shadow: 0 2px 4px 0 rgba(232, 232, 232, 0.53);
+    padding: 0 8px;
+    background: #ffffff;
 }
 .f-input::placeholder {
-    color: #94979b;
-    opacity: 0.6;
+    color: #BFC1C3;
+    font-weight: 300;
 }
