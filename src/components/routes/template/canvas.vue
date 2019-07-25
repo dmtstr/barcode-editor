@@ -2,11 +2,24 @@
     Styles
 -->
 
-<style>
+<style scoped>
 
-    .canvas-container {
-        background: #fff;
-        margin: 24px;
+    .canvas {
+        font-size: 0;
+        white-space: nowrap;
+        text-align: center;
+        padding: 24px;
+        overflow: auto;
+    }
+    .canvas:before {
+        content: '';
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .canvas > * {
+        display: inline-block;
+        vertical-align: middle;
     }
 
 </style>
@@ -18,7 +31,9 @@
 -->
 
 <template>
-    <canvas></canvas>
+    <div class="canvas">
+        <canvas class="u-tile" ref="canvas"></canvas>
+    </div>
 </template>
 
 
@@ -124,18 +139,16 @@
 
 
         mounted () {
-
-            this.canvas = new fabric.Canvas(this.$el);
+            this.canvas = new fabric.Canvas(this.$refs.canvas);
             this.canvas.setWidth(this.template.width);
             this.canvas.setHeight(this.template.height);
             this.canvas.loadFromJSON(this.template.content, () => this.canvas.renderAll());
             this.canvas.on('selection:created', object => this.activate(object.target));
             this.canvas.on('selection:updated', object => this.activate(object.target));
-
+            this.canvas.wrapperEl.setAttribute(this.$options._scopeId, '');
             this.on(['prop', this.prop]);
             this.on(['rotate', this.rotate]);
             this.setCanvas(this.canvas);
-
         }
 
     }

@@ -4,8 +4,6 @@ import router from '@/common/modules/router';
 import store from '@/common/modules/store';
 import app from '@/components/app.vue';
 
-import '@/common/directives/value-round';
-
 new Vue({
     store,
     router,

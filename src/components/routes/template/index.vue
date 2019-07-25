@@ -4,6 +4,10 @@
 
 <style>
 
+    .r-template .bar {
+        position: relative;
+        z-index: 1;
+    }
 
 </style>
 
@@ -26,9 +30,7 @@
 
         <div class="u-flex u-row" v-if="template">
             <item-toolbar class="bar" v-show="editing" />
-            <div class="canvas u-flex">
-                <item-canvas />
-            </div>
+            <item-canvas class="u-flex" />
             <item-aside class="bar"  />
         </div>
 

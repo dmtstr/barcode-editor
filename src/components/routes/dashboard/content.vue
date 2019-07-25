@@ -9,7 +9,7 @@
 
     .content {
         margin: 0 auto;
-        width: 848px;
+        /*width: 950px;*/
         padding: 0 16px;
     }
 
@@ -20,8 +20,9 @@
         position: relative;
         width: 240px;
         height: 135px;
-        box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);
+        /*box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);*/
         border-radius: 3px;
+        /*border: 1px solid #D6D6D6;*/
     }
 
 
@@ -29,6 +30,7 @@
 
     .content .tile {
         margin: 0 16px 16px 16px;
+        padding: 12px;
     }
     .content .tile p {
         font-size: 13px;
@@ -52,8 +54,8 @@
     /* template */
 
     .content .template .image {
-        padding: 12px;
-        background: #ffffff;
+        /*padding: 4px;*/
+        /*background: #F5F7FA;*/
     }
 
     .content .template .image img {
@@ -87,7 +89,7 @@
 
         <!-- template -->
 
-        <router-link class="tile template u-fl" v-for="template in templates" :to="`/${template.id}`" :key="template.id">
+        <router-link class="tile u-tile template u-fl" v-for="template in templates" :to="`/${template.id}`" :key="template.id">
             <div class="image">
                 <img src="/template.png"/>
             </div>

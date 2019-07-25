@@ -26,7 +26,7 @@
         <!-- title -->
 
         <template v-slot:title>
-            Dashbaord
+            Dashboard
         </template>
 
 

@@ -6,8 +6,6 @@
 
     .toolbar {
         width: 80px;
-        background: #ffffff;
-        box-shadow: 0 0 5px 0 rgba(232, 232, 232, 0.53);
     }
     .toolbar a {
         width: 32px;
@@ -31,7 +29,7 @@
 -->
 
 <template>
-    <div class="toolbar">
+    <div class="toolbar u-tile">
         <a>
             <icon-text />
         </a>
