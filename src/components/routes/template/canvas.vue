@@ -3,7 +3,12 @@
 -->
 
 <style>
-    
+
+    .canvas-container {
+        background: #fff;
+        margin: 24px;
+    }
+
 </style>
 
 
@@ -26,46 +31,74 @@
 
 
     import {fabric} from 'fabric'
+    import {mapState, mapMutations, mapActions} from 'vuex'
 
 
-    const create = () => {
-
-    }
-
+    fabric.Object.prototype.set({
+        transparentCorners: false,
+        borderColor: '#3a84ff',
+        cornerColor: '#3a84ff',
+        cornerSize: 6,
+        padding: 2
+    });
 
     export default {
 
-        props: [
-            'template'
-        ],
-
         data () {
             return {
-                canvas: null,
-                active: null
+                canvas: null
             }
+        },
+
+        computed: {
+
+            ...mapState('template', [
+                'template',
+                'active'
+            ])
+
         },
 
         methods: {
 
-            add (options) {
-                fabric.util.enlivenObjects([options], ([object]) => {
-                    this.canvas.add(object);
-                    this.canvas.setActiveObject(object);
-                });
-            },
+            ...mapActions('template', [
+                'activate',
+                'on'
+            ]),
 
-            update (prop, value) {
-
-                this.active.set(prop, +value);
+            render () {
                 this.active.setCoords();
                 this.canvas.requestRenderAll();
-
             },
 
-            remove () {
+            prop (prop, value) {
+                this.active.set(prop, value);
+                this.render();
+            },
 
-            }
+            rotate (angle) {
+                this.active.rotate(angle);
+                this.render();
+            },
+
+//            add (options) {
+//                fabric.util.enlivenObjects([options], ([object]) => {
+//                    this.canvas.add(object);
+//                    this.canvas.setActiveObject(object);
+//                });
+//            },
+//
+//            update (prop, value) {
+//
+//                this.active.set(prop, +value);
+//                this.active.setCoords();
+//                this.canvas.requestRenderAll();
+//
+//            },
+//
+//            remove () {
+//
+//            }
 
 //            text (data) {
 //                this.canvas.add(new fabric.Text(data.value, data.option));
@@ -87,20 +120,17 @@
 
 
         mounted () {
+
             this.canvas = new fabric.Canvas(this.$el);
             this.canvas.setWidth(this.template.width);
             this.canvas.setHeight(this.template.height);
-            this.canvas.loadFromJSON(this.template.content, () => {
-                this.canvas.renderAll()
-            });
-            this.canvas.on('selection:created', object => {
-                this.active = object.target;
-                this.$emit('activate', this.active);
-            });
-            this.canvas.on('selection:updated', object => {
-                this.active = object.target;
-                this.$emit('activate', this.active);
-            });
+            this.canvas.loadFromJSON(this.template.content, () => this.canvas.renderAll());
+            this.canvas.on('selection:created', object => this.activate(object.target));
+            this.canvas.on('selection:updated', object => this.activate(object.target));
+
+            this.on(['prop', this.prop]);
+            this.on(['rotate', this.rotate]);
+
         }
 
     }

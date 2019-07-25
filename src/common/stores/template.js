@@ -1,42 +1,126 @@
-const clone = object => {
-    return JSON.parse(JSON.stringify(object));
+import Config from '@/common/configs/canvas'
+import Axios from '@/common/modules/axios'
+
+
+const defaults = {
+    editing: false,
+    loading: false,
+    cache: null,
+    template: null,
+    active: null,
+    canvas: null,
+    events: {}
 };
 
 
 export default {
 
     namespaced: true,
+    state: Object.assign({}, defaults),
 
-    state: {
 
-        editing: false,
-        cache: null,
-        template: null
+    mutations: {
+
+        name ({template}, value) {
+            template.name = value;
+        },
+
+        width ({template, canvas}, value) {
+            template.width = value;
+            canvas.setWidth(value);
+        }
+
+
 
     },
 
+
     actions: {
 
-        edit ({state}) {
-            state.cache = clone(state.template);
+        reset ({state}) {
+            Object.assign(state, defaults);
+        },
+
+        init ({state}) {
             state.editing = true;
+            state.template = Object.assign({}, Config.template);
+            state.active = state.template;
+        },
+
+        load ({state}, id) {
+            state.loading = 'Loading...';
+            state.template = null;
+            return Axios.call('get', id)
+                .then(response => {
+                    state.template = response.data.data;
+                    state.loading = false;
+                })
+        },
+
+        create ({state}, callback) {
+            state.editing = false;
+            state.loading = 'Saving...';
+            return Axios.call('create', state.template)
+                .then(response => {
+                    state.template.id = response.data.data.id;
+                    callback(state.template);
+                })
+                .catch(() => {
+                    state.editing = true;
+                })
+                .finally(() => {
+                    state.loading = false;
+                })
+        },
+
+        update ({state}, callback) {
+            state.editing = false;
+            state.loading = 'Saving...';
+            return Axios.call('update', state.template)
+                .then(callback)
+                .catch(() => {
+                    state.editing = true;
+                })
+                .finally(() => {
+                    state.loading = false;
+                })
+        },
+
+        remove ({state}, callback) {
+            state.loading = 'Deleting...';
+            Axios.call('remove', state.template.id)
+                .then(callback)
+                .catch(() => {
+                    state.loading = false
+                });
+        },
+
+        edit ({state}) {
+            state.editing = true;
+            state.cache = JSON.parse(JSON.stringify(state.template));
         },
 
         cancel ({state}) {
-            state.template = state.cache;
-            state.cache = null;
             state.editing = false;
+            state.template = state.cache;
         },
 
-        save () {
-
+        activate ({state}, object) {
+            state.active = object;
         },
 
+        on ({state}, [event, callback]) {
+            !state.events[event] && (state.events[event] = []);
+            state.events[event].push(callback);
+        },
 
-
-        set ({state}, params) {
-            Object.assign(state, params);
+        emit ({state}, data) {
+            const name = data.shift();
+            state.events[name].forEach(event => event.apply(null, data));
         }
+
+
+
 
 
     }
