@@ -52,7 +52,7 @@
         computed: {
 
             valid () {
-                return validate(this.value.toString());
+                return validate(this.value && this.value.toString());
             }
 
         },

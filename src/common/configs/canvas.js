@@ -4,20 +4,22 @@ export default {
         name: 'New template',
         width: 800,
         height: 600,
-        content: {
-            "version": "3.3.0",
-            "objects": [
-                {
-                    "type": "rect",
-                    "left": 100,
-                    "top": 100,
-                    "width": 100,
-                    "height": 100,
-                    "fill": "red",
-                    "strokeWidth": 0
-                }
-            ]
-        }
+        objects: [
+            {
+                "id": 1,
+                "type": "rect",
+                "left": 100,
+                "top": 100,
+                "width": 100,
+                "height": 100,
+                "fill": "#ff0000",
+                scaleX: 1,
+                scaleY: 1,
+                angle: 0,
+                "strokeWidth": 0
+            }
+        ]
+
     },
 
     text: {

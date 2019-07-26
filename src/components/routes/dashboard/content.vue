@@ -55,7 +55,7 @@
 
     .content .template .image {
         /*padding: 4px;*/
-        /*background: #F5F7FA;*/
+        background: #F5F7FA;
     }
 
     .content .template .image img {
@@ -91,7 +91,7 @@
 
         <router-link class="tile u-tile template u-fl" v-for="template in templates" :to="`/${template.id}`" :key="template.id">
             <div class="image">
-                <img src="/template.png"/>
+                <img :src="template.image"/>
             </div>
             <p>{{template.name}}</p>
         </router-link>

@@ -42,7 +42,7 @@
         <a>
             <icon-line />
         </a>
-        <a @click="$emit('action', 'rect')">
+        <a @click="emit(['add', 'rect'])">
             <icon-rect />
         </a>
     </div>
@@ -57,6 +57,7 @@
 <script>
 
 
+    import {mapActions} from 'vuex'
     import iconText from '@/assets/icons/text.svg'
     import iconImage from '@/assets/icons/image.svg'
     import iconBarcode from '@/assets/icons/barcode.svg'
@@ -72,6 +73,14 @@
             iconBarcode,
             iconLine,
             iconRect
+        },
+
+        methods: {
+
+            ...mapActions('template', [
+                'emit'
+            ])
+
         }
 
 

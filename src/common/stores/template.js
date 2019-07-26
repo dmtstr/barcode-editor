@@ -1,3 +1,4 @@
+import {fabric} from 'fabric'
 import Config from '@/common/configs/canvas'
 import Axios from '@/common/modules/axios'
 
@@ -13,6 +14,26 @@ const defaults = {
 };
 
 
+const canvasToJSON = canvas => {
+    const {objects} = canvas.toJSON();
+    return {
+        objects,
+        width: canvas.width,
+        height: canvas.height,
+        image: canvas.toDataURL()
+    }
+};
+
+const canvasFromJSON = template => {
+    let canvas = new fabric.Canvas();
+    canvas.setWidth(template.width);
+    canvas.setHeight(template.height);
+    canvas.loadFromJSON(template, () => canvas.renderAll());
+    return canvas;
+};
+
+
+
 export default {
 
     namespaced: true,
@@ -20,7 +41,9 @@ export default {
 
     // state
 
-    state: Object.assign({}, defaults),
+    state: {
+        ...defaults
+    },
 
 
     // mutations
@@ -29,10 +52,6 @@ export default {
 
         setName ({template}, value) {
             template.name = value;
-        },
-
-        setCanvas (state, canvas) {
-            state.canvas = canvas;
         }
 
     },
@@ -49,26 +68,32 @@ export default {
         init ({state}) {
             state.editing = true;
             state.template = Object.assign({}, Config.template);
+            state.canvas = canvasFromJSON(state.template);
             state.active = state.template;
         },
 
         load ({state}, id) {
             state.loading = 'Loading...';
-            state.template = null;
             return Axios.call('get', id)
                 .then(response => {
                     state.template = response.data.data;
+                    state.canvas = canvasFromJSON(state.template);
                     state.loading = false;
                 })
         },
 
         create ({state}, callback) {
+
             state.editing = false;
             state.loading = 'Saving...';
-            state.template.content = state.canvas.toJSON();
-            return Axios.call('create', state.template)
+
+            return Axios
+                .call('create', Object.assign(
+                    canvasToJSON(state.canvas),
+                    state.template
+                ))
                 .then(response => {
-                    state.template.id = response.data.data.id;
+                    state.template = response.data.data;
                     callback(state.template);
                 })
                 .catch(() => {

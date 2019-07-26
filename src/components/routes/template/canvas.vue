@@ -32,7 +32,7 @@
 
 <template>
     <div class="canvas">
-        <canvas class="u-tile" ref="canvas"></canvas>
+        <div class="u-tile" ref="canvas"></div>
     </div>
 </template>
 
@@ -46,7 +46,7 @@
 
 
     import {fabric} from 'fabric'
-    import {mapState, mapMutations, mapActions} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
 
 
     fabric.Object.prototype.set({
@@ -54,31 +54,25 @@
         borderColor: '#3a84ff',
         cornerColor: '#3a84ff',
         cornerSize: 6,
-        padding: 2
+        padding: 2,
+        lockRotation: true,
+        hasRotatingPoint: false
     });
 
-    export default {
 
-        data () {
-            return {
-                canvas: null
-            }
-        },
+    export default {
 
         computed: {
 
             ...mapState('template', [
                 'template',
-                'active'
+                'active',
+                'canvas'
             ])
 
         },
 
         methods: {
-
-            ...mapMutations('template', [
-                'setCanvas'
-            ]),
 
             ...mapActions('template', [
                 'activate',
@@ -95,60 +89,28 @@
                 this.render();
             },
 
-            rotate (angle) {
-                this.active.rotate(angle);
-                this.render();
+            resize (prop, value) {
+                if (prop === 'width') this.canvas.setWidth(value);
+                if (prop === 'height') this.canvas.setHeight(value);
+                this.canvas.calcOffset();
             },
 
-//            add (options) {
-//                fabric.util.enlivenObjects([options], ([object]) => {
-//                    this.canvas.add(object);
-//                    this.canvas.setActiveObject(object);
-//                });
-//            },
-//
-//            update (prop, value) {
-//
-//                this.active.set(prop, +value);
-//                this.active.setCoords();
-//                this.canvas.requestRenderAll();
-//
-//            },
-//
-//            remove () {
-//
-//            }
-
-//            text (data) {
-//                this.canvas.add(new fabric.Text(data.value, data.option));
-//            },
-//
-//            draw () {
-//                this.canvas.setWidth(this.template.width);
-//                this.canvas.setHeight(this.template.height);
-//
-//                this.template.content.forEach(item => {
-//
-//                    if (!item.shape) item.shape = create();
-//
-//                    this[item.type](item);
-//                });
-//            }
+            add (type) {
+                fabric.util.enlivenObjects([options], ([object]) => {
+                    this.canvas.add(object);
+                    this.canvas.setActiveObject(object);
+                });
+            }
 
         },
 
-
         mounted () {
-            this.canvas = new fabric.Canvas(this.$refs.canvas);
-            this.canvas.setWidth(this.template.width);
-            this.canvas.setHeight(this.template.height);
-            this.canvas.loadFromJSON(this.template.content, () => this.canvas.renderAll());
+            this.$refs.canvas.appendChild(this.canvas.wrapperEl);
             this.canvas.on('selection:created', object => this.activate(object.target));
             this.canvas.on('selection:updated', object => this.activate(object.target));
-            this.canvas.wrapperEl.setAttribute(this.$options._scopeId, '');
+            this.on(['resize', this.resize]);
             this.on(['prop', this.prop]);
-            this.on(['rotate', this.rotate]);
-            this.setCanvas(this.canvas);
+            this.on(['add', this.add]);
         }
 
     }
