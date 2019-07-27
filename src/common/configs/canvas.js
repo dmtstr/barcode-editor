@@ -70,6 +70,43 @@ export default {
         // x2: 75
         // y1: -50
         // y2: 50
+
+        // angle: 0
+        // backgroundColor: ""
+        // clipTo: null
+        // cropX: 0
+        // cropY: 0
+        // crossOrigin: ""
+        // fill: "rgb(0,0,0)"
+        // fillRule: "nonzero"
+        // filters: []
+        // flipX: false
+        // flipY: false
+        // globalCompositeOperation: "source-over"
+        // height: 2304
+        // left: 0
+        // opacity: 1
+        // originX: "left"
+        // originY: "top"
+        // paintFirst: "fill"
+        // scaleX: 1
+        // scaleY: 1
+        // shadow: null
+        // skewX: 0
+        // skewY: 0
+        // stroke: null
+        // strokeDashArray: null
+        // strokeDashOffset: 0
+        // strokeLineCap: "butt"
+        // strokeLineJoin: "miter"
+        // strokeMiterLimit: 4
+        // strokeWidth: 0
+        // top: 0
+        // transformMatrix: null
+        // type: "image"
+        // version: "3.3.0"
+        // visible: true
+        // width: 4096
     },
 
     rect: {

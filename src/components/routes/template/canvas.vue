@@ -121,7 +121,6 @@
             },
 
             image (data) {
-
                 fabric.Image.fromURL(data, image => {
                     const sw = Math.min(this.canvas.width / image.width, 1);
                     const sh =  Math.min(this.canvas.height / image.height, 1);
@@ -133,8 +132,18 @@
                     this.canvas.add(image);
                     this.canvas.setActiveObject(image);
                 });
+            },
 
+            remove () {
+                this.canvas.remove(this.active);
+            },
 
+            backwards () {
+                this.active.sendBackwards();
+            },
+
+            forwards () {
+                this.active.bringForward();
             },
 
             deselect (event) {
@@ -179,6 +188,9 @@
             this.on(['font', this.font]);
             this.on(['add', this.add]);
             this.on(['image', this.image]);
+            this.on(['remove', this.remove]);
+            this.on(['backwards', this.backwards]);
+            this.on(['forwards', this.forwards]);
 
 
 //            this.canvas.on('object:moving', object => console.log(object.target));

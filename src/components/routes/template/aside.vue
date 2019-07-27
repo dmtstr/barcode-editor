@@ -13,15 +13,38 @@
     }
 
 
-    /* texts */
+    /* title */
 
     .aside .title {
+        margin-bottom: 32px;
         padding: 0 12px;
-        font-size: 18px;
-        font-weight: 300;
-        color: #1b253a;
-        margin-bottom: 24px;
     }
+    .aside .title p {
+        font-size: 18px;
+        color: #1b253a;
+        line-height: 20px;
+    }
+    .aside .title a {
+        margin-left: 8px;
+    }
+    .aside .title a svg {
+        width: 20px;
+        height: 20px;
+        fill: #94979b;
+    }
+    .aside .title a:hover svg {
+        fill: #3a84ff;
+    }
+    .aside .title a.disabled {
+        pointer-events: none;
+    }
+    .aside .title a.disabled svg {
+        opacity: 0.4;
+    }
+
+
+    /* label */
+
     .aside .label {
         display: block;
         font-size: 12px;
@@ -94,7 +117,12 @@
 
         <div class="u-clear" v-else-if="active.type === 'rect'">
 
-            <p class="title">Rect</p>
+            <div class="title u-clear">
+                <p class="u-fl">Rectangle</p>
+                <a class="u-fr" @click="emit(['remove'])"><icon-delete /></a>
+                <a class="u-fr" :class="{disabled: last}" @click="emit(['backwards'])"><icon-down /></a>
+                <a class="u-fr" :class="{disabled: first}" @click="emit(['forwards'])"><icon-up /></a>
+            </div>
 
             <div class="u-fl field small">
                 <label class="label">Left</label>
@@ -128,7 +156,12 @@
 
         <div class="u-clear" v-else-if="active.type === 'i-text'">
 
-            <p class="title">Text</p>
+            <div class="title u-clear">
+                <p class="u-fl">Rectangle</p>
+                <a class="u-fr" @click="emit(['remove'])"><icon-delete /></a>
+                <a class="u-fr" :class="{disabled: last}" @click="emit(['backwards'])"><icon-down /></a>
+                <a class="u-fr" :class="{disabled: first}" @click="emit(['forwards'])"><icon-up /></a>
+            </div>
 
             <div class="u-fl field small">
                 <label class="label">Left</label>
@@ -182,7 +215,12 @@
 
         <div class="u-clear" v-else-if="active.type === 'image'">
 
-            <p class="title">Image</p>
+            <div class="title u-clear">
+                <p class="u-fl">Rectangle</p>
+                <a class="u-fr" @click="emit(['remove'])"><icon-delete /></a>
+                <a class="u-fr" :class="{disabled: last}" @click="emit(['backwards'])"><icon-down /></a>
+                <a class="u-fr" :class="{disabled: first}" @click="emit(['forwards'])"><icon-up /></a>
+            </div>
 
             <div class="u-fl field small">
                 <label class="label">Left</label>
@@ -214,17 +252,26 @@
 
 
     import {mapState, mapActions, mapMutations} from 'vuex'
+    import iconUp from '@/assets/icons/up.svg'
+    import iconDown from '@/assets/icons/down.svg'
+    import iconDelete from '@/assets/icons/delete.svg'
+    import iconSettings from '@/assets/icons/settings.svg'
     import uiNumber from '@/components/ui/number.vue'
     import uiColor from '@/components/ui/color.vue'
     import uiSelect from '@/components/ui/select.vue'
+    import uiSettings from '@/components/ui/select.vue'
 
     
     export default {
 
         components: {
+            iconUp,
+            iconDown,
+            iconDelete,
             uiNumber,
             uiColor,
-            uiSelect
+            uiSelect,
+            iconSettings
         },
 
         data () {
@@ -253,8 +300,17 @@
         computed: {
 
             ...mapState('template', [
-                'active'
-            ])
+                'active',
+                'canvas'
+            ]),
+
+            last () {
+                return this.active && this.active.type && (this.canvas.getObjects().indexOf(this.active) === 0);
+            },
+
+            first () {
+                return this.active && this.active.type && (this.canvas.getObjects().indexOf(this.active) === this.canvas.getObjects().length - 1);
+            }
 
         },
 

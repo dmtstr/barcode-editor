@@ -89,8 +89,9 @@ export default {
 
             return Axios
                 .call('create', Object.assign(
-                    canvasToJSON(state.canvas),
-                    state.template
+                    {},
+                    state.template,
+                    canvasToJSON(state.canvas)
                 ))
                 .then(response => {
                     state.template = response.data.data;
@@ -129,15 +130,19 @@ export default {
 
         edit ({state}) {
             state.editing = true;
+            state.active = state.template;
             state.cache = JSON.parse(JSON.stringify(state.template));
         },
 
         cancel ({state}) {
             state.editing = false;
+            state.active = null;
             state.template = state.cache;
+            // state.canvas = canvasFromJSON(state.template);
         },
 
         activate ({state}, object) {
+            // console.log(object)
             state.active = object;
         },
 
