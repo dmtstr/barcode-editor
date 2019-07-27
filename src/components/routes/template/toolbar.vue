@@ -30,7 +30,7 @@
 
 <template>
     <div class="toolbar u-tile">
-        <a>
+        <a @click="emit(['add', 'text'])">
             <icon-text />
         </a>
         <a>

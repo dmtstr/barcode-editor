@@ -41,3 +41,6 @@
     color: #BFC1C3;
     font-weight: 300;
 }
+.f-input:focus {
+    border-color: #3a84ff;
+}

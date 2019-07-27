@@ -29,7 +29,8 @@ a {
 svg {
     display: block;
 }
-input {
+input,
+select {
     display: block;
     margin: 0;
     border: none;
@@ -39,7 +40,8 @@ input {
     background: none;
     width: 100%;
 }
-input:focus {
+input:focus,
+select:focus {
     outline: none;
 }
 input[type=submit] {
