@@ -67,7 +67,7 @@
 <template>
     <div class="ui-color">
 
-        <input class="f-input" type="text" :value="value" />
+        <input class="f-input" type="text" :value="value" @change="change" />
         <a class="color" :style="{background: value}" @click="toggle"></a>
         <picker class="picker u-tile" v-show="picker" :value="value" @input="input" v-outside="hide"></picker>
 
@@ -83,11 +83,37 @@
 <script>
 
 
+    // imports
 
     import {Chrome} from 'vue-color'
     import clickOutside from '@/common/directives/click-outside'
 
 
+    // helpers
+
+    const parse = string => {
+        return ((parseInt(string, 16) || 0).toString(16) + '0').substr(0, 2);
+    };
+
+    const validate = hex => {
+        if (hex[0] !== '#') hex = '#' + hex;
+        let value = hex.substr(1, 6) || '0';
+        let r, g, b;
+        if (value.length > 3) {
+            r = parse(value.substr(0, 2));
+            g = parse(value.substr(2, 2));
+            b = parse(value.substr(4, 2));
+        }
+        else {
+            r = parse(value[0] + value[0]);
+            g = parse(value[1] + value[1]);
+            b = parse(value[2] + value[2]);
+        }
+        return ('#' + r + g + b).toUpperCase();
+    };
+
+
+    // exports
 
     export default {
 
@@ -121,8 +147,14 @@
             },
 
             input ({hex}) {
-                this.$emit('input', hex);
+                this.$emit('change', hex);
             },
+
+            change (event) {
+                const value = validate(event.target.value);
+                event.target.value = value;
+                this.$emit('change', value);
+            }
 
         }
 

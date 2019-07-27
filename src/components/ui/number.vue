@@ -18,7 +18,7 @@
            type="number"
            step="any"
            :value="valid"
-           @input="input" />
+           @change="change" />
 
 </template>
 
@@ -34,10 +34,8 @@
     // helpers
 
     const validate  = value => {
-        if (!value) return '0';
-        const dec = value.split('.')[1];
-        if (dec && dec.length > 2) return parseFloat(value).toFixed(2);
-        return value;
+        if (!value) return 0;
+        return Math.round(value * 100) / 100;
     };
 
 
@@ -52,17 +50,17 @@
         computed: {
 
             valid () {
-                return validate(this.value && this.value.toString());
+                return validate(this.value);
             }
 
         },
 
         methods: {
 
-            input ($event) {
-                const value = validate($event.target.value);
+            change ($event) {
+                const value = validate(parseFloat($event.target.value));
                 $event.target.value = value;
-                this.$emit('input', parseFloat(value));
+                this.$emit('change', parseFloat(value));
             }
 
         }
