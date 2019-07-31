@@ -105,17 +105,17 @@
 
             <div class="u-fl field large">
                 <label class="label">Barcode type</label>
-                <ui-select :value="template.barcode_type" :options="barcodes" @change="generate($event, template.barText)"/>
+                <ui-select :value="template.barcode_type" :options="barcodes" @change="generate($event, template.bar_text)"/>
             </div>
 
             <div class="u-fl field large">
                 <label class="label">Bar text</label>
-                <input class="f-input" type="text" :value="template.bar_text" @change="generate(template.barcodeType, $event.target.value)"/>
+                <input class="f-input" type="text" :value="template.bar_text" @change="generate(template.barcode_type, $event.target.value)"/>
             </div>
 
             <div class="u-fl field large">
-                <a class="u-fr f-button primary">Print</a>
-                <a class="u-fr f-button default">Reset</a>
+                <a class="u-fr f-button primary" @click="print">Print</a>
+                <a class="u-fr f-button default" @click="reset">Reset</a>
             </div>
 
 
@@ -304,12 +304,12 @@
 
             <div class="u-fl field large">
                 <label class="label">Barcode type</label>
-                <ui-select :value="active.barcodeType" :options="barcodes" @change="generate($event, active.barText)"/>
+                <ui-select :value="template.barcode_type" :options="barcodes" @change="generate($event, template.bar_text)"/>
             </div>
 
             <div class="u-fl field large">
                 <label class="label">Bar text</label>
-                <input class="f-input" type="text" :value="active.barText" @change="generate(active.barcodeType, $event.target.value)"/>
+                <input class="f-input" type="text" :value="template.bar_text" @change="generate(template.barcode_type, $event.target.value)"/>
             </div>
 
         </div>
@@ -438,8 +438,8 @@
                     includetext: true
                 }, err => {
                     if (err) return this.error(err.split('at')[0]);
-                    this.active.barcodeType = type;
-                    this.active.barText = text;
+                    this.template.barcode_type = type;
+                    this.template.bar_text = text;
                     this.emit(['barcode', canvas.toDataURL('image/png')]);
                 });
 
@@ -447,6 +447,23 @@
 
             zoom (prop, value) {
                 this.emit(['zoom', prop, value]);
+            },
+
+            print () {
+                var printWin = window.open();
+                printWin.document.open();
+                printWin.document.write('<img src="' + this.canvas.toDataURL() + '">');
+                printWin.document.addEventListener('load', function() {
+                    printWin.focus();
+                    printWin.print();
+                    printWin.document.close();
+                    printWin.close();
+                }, true);
+
+            },
+
+            reset () {
+
             }
 
         }
