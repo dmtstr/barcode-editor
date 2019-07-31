@@ -58,6 +58,9 @@
         font-size: 13px;
         font-weight: 500;
     }
+    .r-dashboard .template:hover {
+        box-shadow: 0 0 2px 0 rgba(58, 132, 255, 0.5);
+    }
 
 
 </style>
