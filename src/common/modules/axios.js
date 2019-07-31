@@ -76,15 +76,22 @@ const Canceller = {
 
 export default {
 
-    call (...args) {
+    request (...args) {
         const key = args.shift();
-        const config = Config[key].apply(Config, args);
+        const config = Config[key].apply(null, args);
+        const canceller = Canceller.get(key);
         return Axios(Object.assign(config, {
-            cancelToken: !config.unabortable && Canceller.get(key).token,
+            cancelToken: canceller.token,
             headers: {
                 'Authorization': 'Bearer ' + Store.state.session.token
             }
         }));
+    },
+
+    call (...args) {
+        return Store.dispatch('session/refresh').then(() => {
+            return this.request.apply(this, args)
+        });
     },
 
     abort (key) {

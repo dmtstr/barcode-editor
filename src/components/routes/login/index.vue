@@ -110,9 +110,7 @@
             ]),
 
             submit () {
-
                 this.loading = true;
-
                 Axios.abort('login').call('login', this.model)
                     .then(response => {
                         this.create(response.data.data.token);

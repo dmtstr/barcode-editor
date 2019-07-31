@@ -8,6 +8,14 @@ export default {
         }
     },
 
+    refresh (token) {
+        return {
+            method: 'POST',
+            url: '/auth/refresh',
+            data: {token}
+        }
+    },
+
     list () {
         return {
             method: 'GET',
