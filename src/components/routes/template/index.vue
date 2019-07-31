@@ -30,7 +30,7 @@
 
         <div class="u-flex u-row" v-if="template">
             <item-toolbar class="bar" v-show="editing" />
-            <item-canvas class="u-flex" />
+            <item-canvas v-if="canvas" class="u-flex" />
             <item-aside class="bar"  />
         </div>
 
@@ -73,7 +73,8 @@
 
             ...mapState('template', [
                 'template',
-                'editing'
+                'editing',
+                'canvas'
             ]),
 
             fresh () {
@@ -89,11 +90,14 @@
         ]),
 
         mounted () {
-            this.reset();
             if (this.fresh) this.init();
             else this.load(this.$route.params.id).catch(error => {
                 error && this.$router.replace('/');
             });
+        },
+
+        created () {
+            this.reset();
         }
 
 

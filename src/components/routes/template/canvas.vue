@@ -78,6 +78,12 @@
 
         },
 
+        data () {
+            return {
+                group: null
+            }
+        },
+
         methods: {
 
             ...mapActions('template', [
@@ -150,8 +156,24 @@
                 event.target === this.$el && this.canvas.discardActiveObject().renderAll();
             },
 
-            test () {
+            fit () {
+                let image = this.group.item(0);
+                const sw = this.group.getScaledWidth() / image.width;
+                const sh = this.group.getScaledHeight() / image.height;
+                const scale = Math.min(sw, sh);
+                image.set('scaleX', 1 / this.group.scaleX * scale);
+                image.set('scaleY', 1 /this.group.scaleY * scale);
+            },
 
+            barcode (src) {
+                fabric.Image.fromURL(src, image => {
+                    image.set('originX', 'center');
+                    image.set('originY', 'center');
+                    this.group.remove(this.group.item(0));
+                    this.group.add(image);
+                    this.fit();
+                    this.canvas.renderAll();
+                });
             }
 
         },
@@ -161,13 +183,14 @@
             editing: {
                 immediate: true,
                 handler (value) {
-
-                    console.log('here');
-
+                    console.log(value);
                     if (!value) {
                         this.canvas.discardActiveObject();
                     }
-                    this.canvas.forEachObject(object => object.selectable = value);
+                    this.canvas.forEachObject(object => {
+                        object.selectable = value;
+                        object.evented = value;
+                    });
                     this.canvas.renderAll();
                 }
             }
@@ -177,11 +200,17 @@
         mounted () {
 
 
+
             this.$refs.canvas.appendChild(this.canvas.wrapperEl);
             this.canvas.selection = false;
+            this.canvas.backgroundColor = '#ffffff';
+            this.group = this.canvas.getObjects().find(object => object.type === 'group');
+
+            this.group.on('scaling', this.fit);
             this.canvas.on('selection:created', object => this.activate(object.target));
             this.canvas.on('selection:updated', object => this.activate(object.target));
-            this.canvas.on('selection:cleared', () => this.activate(this.template));
+            this.canvas.on('selection:cleared', () => this.activate(this.editing &&this.template));
+
             this.on(['resize', this.resize]);
             this.on(['prop', this.prop]);
             this.on(['scale', this.scale]);
@@ -191,7 +220,28 @@
             this.on(['remove', this.remove]);
             this.on(['backwards', this.backwards]);
             this.on(['forwards', this.forwards]);
+            this.on(['barcode', this.barcode]);
 
+            this.on(['zoom', (prop, value) => {
+
+                console.log()
+
+                this.canvas.setZoom(0.5)
+            }]);
+
+
+
+//
+
+//
+//
+//            this.canvas.add(group);
+
+//
+
+//
+//
+//            this.canvas.requestRenderAll();
 
 //            this.canvas.on('object:moving', object => console.log(object.target));
 

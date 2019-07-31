@@ -60,8 +60,6 @@
             iconDropdown
         },
 
-
-
         props: [
             'value',
             'options'

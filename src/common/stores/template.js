@@ -24,12 +24,14 @@ const canvasToJSON = canvas => {
     }
 };
 
-const canvasFromJSON = template => {
+const canvasFromJSON = (template, callback) => {
     let canvas = new fabric.Canvas();
     canvas.setWidth(template.width);
     canvas.setHeight(template.height);
-    canvas.loadFromJSON(template, () => canvas.renderAll());
-    return canvas;
+    canvas.loadFromJSON(template, () => {
+        canvas.renderAll();
+        callback(canvas);
+    });
 };
 
 
@@ -68,8 +70,10 @@ export default {
         init ({state}) {
             state.editing = true;
             state.template = Object.assign({}, Config.template);
-            state.canvas = canvasFromJSON(state.template);
             state.active = state.template;
+            canvasFromJSON(state.template, canvas => {
+                state.canvas = canvas;
+            });
         },
 
         load ({state}, id) {
@@ -77,8 +81,10 @@ export default {
             return Axios.call('get', id)
                 .then(response => {
                     state.template = response.data.data;
-                    state.canvas = canvasFromJSON(state.template);
                     state.loading = false;
+                    canvasFromJSON(state.template, canvas => {
+                        state.canvas = canvas;
+                    });
                 })
         },
 
@@ -108,9 +114,16 @@ export default {
         update ({state}, callback) {
             state.editing = false;
             state.loading = 'Saving...';
-            state.template.content = state.canvas.toJSON();
-            return Axios.call('update', state.template)
-                .then(callback)
+            return Axios
+                .call('update', Object.assign(
+                    {},
+                    state.template,
+                    canvasToJSON(state.canvas)
+                ))
+                .then(response => {
+                    state.template = response.data.data;
+                    callback(response);
+                })
                 .catch(() => {
                     state.editing = true;
                 })
@@ -138,11 +151,13 @@ export default {
             state.editing = false;
             state.active = null;
             state.template = state.cache;
-            // state.canvas = canvasFromJSON(state.template);
+
+            state.canvas.setWidth(state.template.width);
+            state.canvas.setHeight(state.template.height);
+            state.canvas.loadFromJSON(state.template, () => state.canvas.renderAll());
         },
 
         activate ({state}, object) {
-            // console.log(object)
             state.active = object;
         },
 

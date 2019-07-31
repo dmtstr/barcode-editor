@@ -5,6 +5,7 @@
     },
     "dependencies": {
         "axios": "^0.19.0",
+        "bwip-js": "^1.7.3",
         "fabric": "^3.3.2",
         "vue": "^2.6.10",
         "vue-color": "^2.7.0",

@@ -50,10 +50,6 @@
             <icon-image />
         </div>
 
-        <a class="action">
-            <icon-barcode />
-        </a>
-
         <a class="action" @click="emit(['add', 'rect'])">
             <icon-rect />
         </a>

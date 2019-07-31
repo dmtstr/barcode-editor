@@ -89,7 +89,38 @@
 
         <div v-if="!active">
 
-            <p class="title">Print</p>
+            <div class="title">
+                <p>Print</p>
+            </div>
+
+
+            <div class="u-fl field small" v-if="canvas">
+                <label class="label">Width</label>
+                <ui-number :value="template.width" @change="zoom('width', $event)" />
+            </div>
+
+            <div class="u-fl field small" v-if="canvas">
+                <label class="label">Height</label>
+                <ui-number :value="template.height" @change="zoom('height', $event)" />
+            </div>
+
+            <div class="u-fl field large">
+                <label class="label">Barcode type</label>
+                <ui-select :value="template.barcodeType" :options="barcodes" @change="generate($event, template.barText)"/>
+            </div>
+
+            <div class="u-fl field large">
+                <label class="label">Bar text</label>
+                <input class="f-input" type="text" :value="template.barText" @change="generate(template.barcodeType, $event.target.value)"/>
+            </div>
+
+            <div class="u-fr field">
+                <a class=" f-button primary">
+                    Print
+                </a>
+            </div>
+
+
 
         </div>
 
@@ -98,7 +129,9 @@
 
         <div class="u-clear" v-else-if="!active.type">
 
-            <p class="title">Canvas</p>
+            <div class="title">
+                <p>Canvas</p>
+            </div>
 
             <div class="u-fl field large">
                 <label class="label">Width</label>
@@ -239,6 +272,50 @@
 
         </div>
 
+
+
+        <!-- barcode -->
+
+        <div class="u-clear" v-else-if="active.type === 'group'">
+
+            <div class="title u-clear">
+                <p class="u-fl">Barcode</p>
+                <a class="u-fr" :class="{disabled: last}" @click="emit(['backwards'])"><icon-down /></a>
+                <a class="u-fr" :class="{disabled: first}" @click="emit(['forwards'])"><icon-up /></a>
+            </div>
+
+            <div class="u-fl field small">
+                <label class="label">Left</label>
+                <ui-number :value="active.left" @change="prop('left', $event)" />
+            </div>
+
+            <div class="u-fl field small">
+                <label class="label">Top</label>
+                <ui-number :value="active.top" @change="prop('top', $event)" />
+            </div>
+
+            <div class="u-fl field small">
+                <label class="label">Width</label>
+                <ui-number :value="active.width * active.scaleX" @change="size('scaleX', $event)" />
+            </div>
+
+            <div class="u-fl field small">
+                <label class="label">Height</label>
+                <ui-number :value="active.height * active.scaleY" @change="size('scaleY', $event)" />
+            </div>
+
+            <div class="u-fl field large">
+                <label class="label">Barcode type</label>
+                <ui-select :value="active.barcodeType" :options="barcodes" @change="generate($event, active.barText)"/>
+            </div>
+
+            <div class="u-fl field large">
+                <label class="label">Bar text</label>
+                <input class="f-input" type="text" :value="active.barText" @change="generate(active.barcodeType, $event.target.value)"/>
+            </div>
+
+        </div>
+
     </div>
 </template>
 
@@ -252,14 +329,17 @@
 
 
     import {mapState, mapActions, mapMutations} from 'vuex'
+    import bwipjs from 'bwip-js';
     import iconUp from '@/assets/icons/up.svg'
     import iconDown from '@/assets/icons/down.svg'
     import iconDelete from '@/assets/icons/delete.svg'
-    import iconSettings from '@/assets/icons/settings.svg'
     import uiNumber from '@/components/ui/number.vue'
     import uiColor from '@/components/ui/color.vue'
     import uiSelect from '@/components/ui/select.vue'
     import uiSettings from '@/components/ui/select.vue'
+
+
+    let canvas = document.createElement('canvas');
 
     
     export default {
@@ -270,8 +350,7 @@
             iconDelete,
             uiNumber,
             uiColor,
-            uiSelect,
-            iconSettings
+            uiSelect
         },
 
         data () {
@@ -293,6 +372,14 @@
                     {value: 'normal,italic', label: 'Italic'},
                     {value: 'bold,normal', label: 'Bold'},
                     {value: 'bold,italic', label: 'Bold & Italic'}
+                ],
+                barcodes: [
+                    {value: 'code128', label: 'Code 128'},
+                    {value: 'code39', label: 'Code 39'},
+                    {value: 'ean13', label: 'EAN-13'},
+                    {value: 'ean8', label: 'EAN-8' },
+                    {value: 'upca', label: 'UPC-A'},
+                    {value: 'upce', label: 'UPC-E'}
                 ]
             }
         },
@@ -301,7 +388,8 @@
 
             ...mapState('template', [
                 'active',
-                'canvas'
+                'canvas',
+                'template'
             ]),
 
             last () {
@@ -316,9 +404,10 @@
 
         methods: {
 
-            ...mapActions('template', [
-                'emit'
-            ]),
+            ...mapActions({
+                emit: 'template/emit',
+                error: 'toasts/error',
+            }),
 
             prop (name, value) {
                 this.emit(['prop', name, value]);
@@ -342,6 +431,24 @@
 
             scale (value) {
                 this.emit(['scale', value]);
+            },
+
+            generate (type, text) {
+                bwipjs(canvas, {
+                    bcid: type,
+                    text: text,
+                    includetext: true
+                }, err => {
+                    if (err) return this.error(err.split('at')[0]);
+                    this.active.barcodeType = type;
+                    this.active.barText = text;
+                    this.emit(['barcode', canvas.toDataURL('image/png')]);
+                });
+
+            },
+
+            zoom (prop, value) {
+                this.emit(['zoom', prop, value]);
             }
 
         }
