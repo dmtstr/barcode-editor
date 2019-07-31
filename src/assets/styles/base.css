@@ -47,3 +47,6 @@ select:focus {
 input[type=submit] {
     cursor: pointer;
 }
+img {
+    display: block;
+}
