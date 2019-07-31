@@ -61,9 +61,6 @@
         float: left;
         text-align: center;
         margin-left: 12px;
-        height: 32px;
-        line-height: 32px;
-        font-size: 12px;
     }
 
 

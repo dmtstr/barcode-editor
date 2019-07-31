@@ -93,7 +93,6 @@
                 <p>Print</p>
             </div>
 
-
             <div class="u-fl field small" v-if="canvas">
                 <label class="label">Width</label>
                 <ui-number :value="template.width" @change="zoom('width', $event)" />
@@ -106,18 +105,17 @@
 
             <div class="u-fl field large">
                 <label class="label">Barcode type</label>
-                <ui-select :value="template.barcodeType" :options="barcodes" @change="generate($event, template.barText)"/>
+                <ui-select :value="template.barcode_type" :options="barcodes" @change="generate($event, template.barText)"/>
             </div>
 
             <div class="u-fl field large">
                 <label class="label">Bar text</label>
-                <input class="f-input" type="text" :value="template.barText" @change="generate(template.barcodeType, $event.target.value)"/>
+                <input class="f-input" type="text" :value="template.bar_text" @change="generate(template.barcodeType, $event.target.value)"/>
             </div>
 
-            <div class="u-fr field">
-                <a class=" f-button primary">
-                    Print
-                </a>
+            <div class="u-fl field large">
+                <a class="u-fr f-button primary">Print</a>
+                <a class="u-fr f-button default">Reset</a>
             </div>
 
 

@@ -222,28 +222,24 @@
             this.on(['forwards', this.forwards]);
             this.on(['barcode', this.barcode]);
 
+
+
+
             this.on(['zoom', (prop, value) => {
-
-                console.log()
-
-                this.canvas.setZoom(0.5)
+                this.resize(prop, value);
+                this.canvas.setZoom(1);
+                this.canvas.absolutePan(new fabric.Point((this.template.width - this.canvas.width) / 2 , (this.template.height - this.canvas.height) / 2)) ;
+                const sw = this.canvas.width / this.template.width;
+                const sh = this.canvas.height / this.template.height;
+                const zoom = Math.min(sw, sh);
+                this.canvas.zoomToPoint({
+                    x: this.canvas.width / 2,
+                    y: this.canvas.height / 2
+                }, zoom);
             }]);
 
 
 
-//
-
-//
-//
-//            this.canvas.add(group);
-
-//
-
-//
-//
-//            this.canvas.requestRenderAll();
-
-//            this.canvas.on('object:moving', object => console.log(object.target));
 
 
 

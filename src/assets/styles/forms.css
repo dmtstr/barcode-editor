@@ -1,10 +1,10 @@
 /* button */
 
 .f-button {
-    height: 36px;
+    height: 32px;
     border-radius: 3px;
-    line-height: 36px;
-    font-size: 14px;
+    line-height: 32px;
+    font-size: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     color: #fff;
     text-align: center;

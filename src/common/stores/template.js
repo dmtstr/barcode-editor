@@ -6,7 +6,6 @@ import Axios from '@/common/modules/axios'
 const defaults = {
     editing: false,
     loading: false,
-    cache: null,
     template: null,
     active: null,
     canvas: null,
@@ -24,13 +23,15 @@ const canvasToJSON = canvas => {
     }
 };
 
-const canvasFromJSON = (template, callback) => {
-    let canvas = new fabric.Canvas();
-    canvas.setWidth(template.width);
-    canvas.setHeight(template.height);
-    canvas.loadFromJSON(template, () => {
-        canvas.renderAll();
-        callback(canvas);
+const canvasFromJSON = template => {
+    return new Promise(resolve => {
+        let canvas = new fabric.Canvas();
+        canvas.setWidth(template.width);
+        canvas.setHeight(template.height);
+        canvas.loadFromJSON(template, () => {
+            canvas.renderAll();
+            resolve(canvas);
+        });
     });
 };
 
@@ -70,8 +71,8 @@ export default {
         init ({state}) {
             state.editing = true;
             state.template = Object.assign({}, Config.template);
-            state.active = state.template;
-            canvasFromJSON(state.template, canvas => {
+            canvasFromJSON(state.template).then(canvas => {
+                state.active = state.template;
                 state.canvas = canvas;
             });
         },
@@ -81,10 +82,11 @@ export default {
             return Axios.call('get', id)
                 .then(response => {
                     state.template = response.data.data;
+                    return canvasFromJSON(state.template);
+                })
+                .then(canvas => {
                     state.loading = false;
-                    canvasFromJSON(state.template, canvas => {
-                        state.canvas = canvas;
-                    });
+                    state.canvas = canvas;
                 })
         },
 

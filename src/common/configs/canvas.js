@@ -4,14 +4,14 @@ export default {
         name: 'New template',
         width: 800,
         height: 600,
-        barcodeType: 'code128',
-        barText: 'Count01234567!',
+        barcode_type: 'code128',
+        bar_text: 'Count01234567!',
         objects: [
             {
                 id: 0,
                 type: 'group',
-                left: 0,
-                top: 0,
+                left: 150,
+                top: 179,
                 width: 501,
                 height: 242,
                 scaleX: 1,
