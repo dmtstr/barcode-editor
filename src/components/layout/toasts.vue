@@ -11,6 +11,7 @@
         position: absolute;
         bottom: 24px;
         right: 24px;
+        z-index: 2;
     }
     .l-toasts .toast {
         margin-top: 16px;

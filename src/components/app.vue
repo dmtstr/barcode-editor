@@ -7,13 +7,6 @@
     #app {
         height: 100%;
     }
-    #app .l-section {
-        z-index: 1;
-        height: 100%;
-    }
-    #app .l-toasts {
-        z-index: 2;
-    }
 
 </style>
 
@@ -25,8 +18,8 @@
 
 <template>
     <div id="app">
-        <layout-section class="l-section" />
-        <layout-toasts class="l-toasts" />
+        <layout-section />
+        <layout-toasts />
     </div>
 </template>
 
