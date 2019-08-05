@@ -29,7 +29,7 @@
         <!-- content -->
 
         <div class="u-flex u-row" v-if="canvas">
-            <item-toolbar class="bar" v-show="editing" />
+<!--            <item-toolbar class="bar" />-->
             <item-canvas class="u-flex" />
             <item-aside class="bar"  />
         </div>
@@ -72,7 +72,6 @@
         computed: {
 
             ...mapState('template', [
-                'editing',
                 'canvas'
             ]),
 
@@ -98,7 +97,6 @@
         created () {
             this.reset();
         }
-
 
     }
 

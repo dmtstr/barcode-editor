@@ -27,23 +27,25 @@
 
         <template v-slot:title>
             <span v-show="loading">{{loading}}</span>
-            <input type="text" v-show="!loading" :value="template && template.name" :disabled="!editing" @input="setName($event.target.value)"/>
+            <input type="text" v-show="!loading" :value="template && template.name" :disabled="!editing" ref="name" />
         </template>
 
 
         <!-- buttons -->
 
         <template v-slot:buttons>
+            <div v-show="!loading">
 
-            <a class="f-button default" v-show="!editing" @click="remove(removed)">Delete</a>
-            <a class="f-button primary" v-show="!editing" @click="edit()">Edit</a>
+                <a class="f-button default" v-show="!editing" @click="remove(removed)">Delete</a>
+                <a class="f-button primary" v-show="!editing" @click="edit()">Edit</a>
 
-            <router-link class="f-button default" v-show="fresh && editing" to="/">Cancel</router-link>
-            <a class="f-button primary" v-show="fresh && editing" @click="create(created)">Save</a>
+                <router-link class="f-button default" v-show="fresh && editing" to="/">Cancel</router-link>
+                <a class="f-button primary" v-show="fresh && editing" @click="create(name).then(created)">Save</a>
 
-            <a class="f-button default" v-show="!fresh && editing" @click="cancel()">Cancel</a>
-            <a class="f-button primary" v-show="!fresh && editing" @click="update(updated)">Save</a>
+                <a class="f-button default" v-show="!fresh && editing" @click="cancel()">Cancel</a>
+                <a class="f-button primary" v-show="!fresh && editing" @click="update(updated)">Save</a>
 
+            </div>
         </template>
 
 
@@ -81,7 +83,11 @@
 
             fresh () {
                 return this.$route.meta.type === 'fresh'
-            }
+            },
+
+            name () {
+                return this.$refs.name.value;
+            },
 
         },
 
@@ -100,9 +106,9 @@
                 'success': 'toasts/success'
             }),
 
-            created (template) {
+            created ({id}) {
                 this.success('The template has been successfully saved');
-                this.$router.replace('/' + template.id);
+                this.$router.replace('/' + id);
             },
 
             updated () {
