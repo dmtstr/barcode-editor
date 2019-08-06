@@ -116,12 +116,6 @@
             asideText
         },
 
-        data () {
-            return {
-
-            }
-        },
-
         computed: {
 
             ...mapState('template', [

@@ -52,13 +52,16 @@
         },
 
         computed: mapState('template', [
-            'active'
+            'active',
+            'canvas'
         ]),
 
         methods: {
 
-            resize () {
-                console.log('here')
+            resize (prop, value) {
+                if (prop === 'width') this.canvas.setWidth(value);
+                if (prop === 'height') this.canvas.setHeight(value);
+                this.canvas.calcOffset();
             }
 
         }
