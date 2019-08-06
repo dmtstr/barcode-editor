@@ -27,7 +27,7 @@ const defaults = {
 // -------------------
 
 const canvasToJSON = (canvas, name) => {
-    const {objects} = canvas.toJSON();
+    const {objects} = canvas.toJSON(['barcodeType', 'barText']);
     return {
         name,
         objects,
