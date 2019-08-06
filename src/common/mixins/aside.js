@@ -1,4 +1,4 @@
-import {mapActions} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import iconUp from '@/assets/icons/up.svg'
 import iconDown from '@/assets/icons/down.svg'
 import iconDelete from '@/assets/icons/delete.svg'
@@ -13,6 +13,11 @@ export default {
     },
 
     computed: {
+
+        ...mapState('template', [
+            'active',
+            'canvas'
+        ]),
 
         last () {
             return this.canvas.getObjects().indexOf(this.active) === 0;

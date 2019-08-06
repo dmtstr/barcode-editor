@@ -77,7 +77,6 @@
 <script>
 
 
-    import {mapState} from 'vuex'
     import asideMixin from '@/common/mixins/aside'
     import uiNumber from '@/components/ui/number.vue'
     import uiSelect from '@/components/ui/select.vue'
@@ -95,11 +94,6 @@
         mixins: [
             asideMixin
         ],
-
-        computed: mapState('template', [
-            'active',
-            'canvas'
-        ]),
 
         data () {
             return {
