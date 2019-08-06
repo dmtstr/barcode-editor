@@ -45,16 +45,17 @@
 <script>
 
 
+    // imports
+
     import {fabric} from 'fabric'
     import {mapState, mapActions} from 'vuex'
-    import Defaults from '@/common/configs/canvas'
 
 
+    // fabric prototypes
 
     fabric.Canvas.prototype.getBarcode = function() {
         return this.getObjects().find(object => object.type === 'group');
     };
-
 
     fabric.Object.prototype.set({
         transparentCorners: false,
@@ -71,6 +72,8 @@
     });
 
 
+    // exports
+
     export default {
 
         computed: mapState('template', [
@@ -80,7 +83,7 @@
 
         data () {
             return {
-                group: null
+                barcode: null
             }
         },
 
@@ -94,7 +97,16 @@
                 if (event.target !== this.$el) return;
                 this.canvas.discardActiveObject(event);
                 this.canvas.renderAll();
-            }
+            },
+
+            fit () {
+                let image = this.barcode.item(0);
+                const sw = this.barcode.getScaledWidth() / image.width;
+                const sh = this.barcode.getScaledHeight() / image.height;
+                const scale = Math.min(sw, sh);
+                image.set('scaleX', 1 / this.barcode.scaleX * scale);
+                image.set('scaleY', 1 /this.barcode.scaleY * scale);
+            },
 
         },
 
@@ -117,23 +129,14 @@
         },
 
         mounted () {
-
             this.canvas.selection = false;
             this.canvas.backgroundColor = '#ffffff';
             this.canvas.on('selection:created', object => this.activate(object.target));
             this.canvas.on('selection:updated', object => this.activate(object.target));
             this.canvas.on('selection:cleared', ({e}) => e && this.activate(this.canvas));
-
-
-            this.group = this.canvas.getBarcode();
-            // this.group.on('scaling', this.fit);
-
+            this.barcode = this.canvas.getBarcode();
+            this.barcode.on('scaling', this.fit);
             this.$refs.canvas.appendChild(this.canvas.wrapperEl);
-
-
-
-
-
         }
 
     }

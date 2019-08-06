@@ -8,10 +8,10 @@ export default {
             {
                 id: 0,
                 type: 'group',
-                left: 150,
-                top: 179,
-                width: 501,
-                height: 242,
+                left: 274.75,
+                top: 239.5,
+                width: 250.5,
+                height: 121,
                 scaleX: 1,
                 scaleY: 1,
                 barcodeType: 'code128',
@@ -22,6 +22,8 @@ export default {
                         src: '/barcode.png',
                         originX: 'center',
                         originY: 'center',
+                        scaleX: 0.5,
+                        scaleY: 0.5
                     }
                 ]
             }
@@ -30,7 +32,7 @@ export default {
 
     text: {
         type: 'i-text',
-        text: 'hello world',
+        text: 'text',
         fontFamily: 'Times New Roman',
         fontSize: 40,
         fontStyle: 'normal',
