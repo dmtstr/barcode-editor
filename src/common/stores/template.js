@@ -79,6 +79,7 @@ export default {
             canvasFromJSON(null, Config.template).then(({canvas, template}) => {
                 state.template = template;
                 state.canvas = canvas;
+                state.active = canvas;
                 state.editing = true;
             });
         },
@@ -97,16 +98,13 @@ export default {
 
         // editing
 
-        edit ({state}) {
-            state.editing = true;
-            state.active = state.canvas;
+        edit ({state}, value) {
+            state.editing = value;
+            state.active = value && state.canvas;
         },
 
-        cancel ({state}) {
-            canvasFromJSON(state.canvas, state.template).then(() => {
-                state.editing = false;
-                state.active = null;
-            })
+        cancel ({state, dispatch}) {
+            canvasFromJSON(state.canvas, state.template).then(() => dispatch('edit', false))
         },
 
         activate ({state}, object) {
@@ -116,13 +114,28 @@ export default {
 
         // saving
 
-        create ({state}, name) {
-            state.editing = false;
+        create ({state, dispatch}, name) {
             state.loading = 'Saving...';
+            dispatch('edit', false);
             return Axios.call('create', canvasToJSON(state.canvas, name))
                 .then(response => (state.template = response.data.data))
-                .catch(() => state.editing = false)
+                .catch(() => dispatch('edit', true))
                 .finally(() => state.loading = false);
+        },
+
+        update ({state, dispatch}, name) {
+            state.loading = 'Saving...';
+            dispatch('edit', false);
+            return Axios.call('update', canvasToJSON(state.canvas, name), state.template.id)
+                .then(response => (state.template = response.data.data))
+                .catch(() => dispatch('edit', true))
+                .finally(() => state.loading = false);
+        },
+
+        remove ({state}) {
+            state.loading = 'Deleting...';
+            Axios.call('remove', state.template.id)
+                .catch(() => state.loading = false);
         },
 
     }

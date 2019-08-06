@@ -103,6 +103,9 @@
             editing: {
                 immediate: true,
                 handler (value) {
+                    if (!value) {
+                        this.canvas.discardActiveObject();
+                    }
                     this.canvas.forEachObject(object => {
                         object.selectable = value;
                         object.evented = value;

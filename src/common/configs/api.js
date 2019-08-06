@@ -30,10 +30,10 @@ export default {
         }
     },
 
-    update (data) {
+    update (data, id) {
         return {
             method: 'PATCH',
-            url: '/items/editor/' + data.id,
+            url: '/items/editor/' + id,
             data: data
         }
     },

@@ -36,14 +36,14 @@
         <template v-slot:buttons>
             <div v-show="!loading">
 
-                <a class="f-button default" v-show="!editing" @click="remove(removed)">Delete</a>
-                <a class="f-button primary" v-show="!editing" @click="edit()">Edit</a>
+                <a class="f-button default" v-show="!editing" @click="remove().then(removed)">Delete</a>
+                <a class="f-button primary" v-show="!editing" @click="edit(true)">Edit</a>
 
                 <router-link class="f-button default" v-show="fresh && editing" to="/">Cancel</router-link>
                 <a class="f-button primary" v-show="fresh && editing" @click="create(name).then(created)">Save</a>
 
                 <a class="f-button default" v-show="!fresh && editing" @click="cancel()">Cancel</a>
-                <a class="f-button primary" v-show="!fresh && editing" @click="update(updated)">Save</a>
+                <a class="f-button primary" v-show="!fresh && editing" @click="update(name).then(updated)">Save</a>
 
             </div>
         </template>
