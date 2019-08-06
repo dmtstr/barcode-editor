@@ -29,7 +29,7 @@
         <!-- content -->
 
         <div class="u-flex u-row" v-if="canvas">
-<!--            <item-toolbar class="bar" />-->
+            <item-toolbar class="bar" />
             <item-canvas class="u-flex" />
             <item-aside class="bar"  />
         </div>
@@ -54,8 +54,6 @@
     import itemToolbar from './toolbar.vue'
     import itemCanvas from './canvas.vue'
     import itemAside from './aside.vue'
-
-
 
 
     // exports
@@ -99,5 +97,6 @@
         }
 
     }
+
 
 </script>

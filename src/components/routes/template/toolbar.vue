@@ -41,16 +41,16 @@
 <template>
     <div class="toolbar u-tile">
 
-        <a class="action" @click="emit(['add', 'text'])">
+        <a class="action" @click="object('text')">
             <icon-text />
         </a>
 
         <div class="action image">
-            <input type="file" class="u-stretch" accept="image/*" @change="file" />
+            <input type="file" class="u-stretch" accept=".png, .jpg, .jpeg" @change="file" />
             <icon-image />
         </div>
 
-        <a class="action" @click="emit(['add', 'rect'])">
+        <a class="action" @click="object('rect')">
             <icon-rect />
         </a>
 
@@ -66,7 +66,9 @@
 <script>
 
 
-    import {mapActions} from 'vuex'
+    import {fabric} from 'fabric'
+    import {mapState, mapActions} from 'vuex'
+    import Config from '@/common/configs/canvas'
     import iconText from '@/assets/icons/text.svg'
     import iconImage from '@/assets/icons/image.svg'
     import iconBarcode from '@/assets/icons/barcode.svg'
@@ -88,20 +90,43 @@
             iconRect
         },
 
+        computed: {
+            ...mapState('template', [
+                'editing',
+                'canvas'
+            ])
+        },
+
         methods: {
 
             ...mapActions({
-                emit: 'template/emit',
                 error: 'toasts/error'
             }),
+
+            object (type) {
+                fabric.util.enlivenObjects([Config[type]], ([object]) => this.add(object));
+            },
 
             file (event) {
                 const file = event.target.files[0];
                 if (file.size > MAX * MB) return this.error(`File size should be less than ${MAX} MB`);
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = () => this.emit(['image', reader.result]);
+                reader.onload = () => fabric.Image.fromURL(reader.result, image => {
+                    const sw = Math.min(this.canvas.width / image.width, 1);
+                    const sh =  Math.min(this.canvas.height / image.height, 1);
+                    const scale = Math.min(sw, sh);
+                    image.set('scaleX', scale);
+                    image.set('scaleY', scale);
+                    image.set('top', 0);
+                    image.set('left', 0);
+                    this.add(image);
+                });
+            },
 
+            add (object) {
+                this.canvas.add(object);
+                this.canvas.setActiveObject(object);
             }
 
         }
