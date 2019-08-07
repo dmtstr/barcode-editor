@@ -1,5 +1,5 @@
 import Axios from '@/common/modules/axios';
-const REFRESH = 3 * 60 * 5000;
+const REFRESH = 3 * 60 * 1000;
 
 
 export default {
