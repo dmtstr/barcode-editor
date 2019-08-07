@@ -4,9 +4,36 @@
 
 <style>
 
+
+    /* main */
+
     .r-template .bar {
         position: relative;
         z-index: 1;
+    }
+
+
+    /* print */
+
+    @media print {
+
+        .r-template {
+            display: block;
+        }
+        .r-template .header {
+            display: none;
+        }
+        .r-template .toolbar {
+            display: none;
+        }
+        .r-template .aside {
+            display: none;
+        }
+        .r-template .canvas {
+            padding: 0;
+            text-align: left
+        }
+
     }
 
 </style>
@@ -23,15 +50,15 @@
 
         <!-- header -->
 
-        <item-header />
+        <item-header class="header" />
 
 
         <!-- content -->
 
         <div class="u-flex u-row" v-if="canvas">
-            <item-toolbar class="bar" />
-            <item-canvas class="u-flex" />
-            <item-aside class="bar"  />
+            <item-toolbar class="toolbar bar" />
+            <item-canvas class="canvas u-flex" />
+            <item-aside class="aside bar"  />
         </div>
 
 
