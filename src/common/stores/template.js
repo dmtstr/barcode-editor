@@ -99,12 +99,13 @@ export default {
         // editing
 
         edit ({state}, value) {
+            state.canvas.setViewportTransform([1,0,0,1,0,0]); // move to another place
             state.editing = value;
             state.active = value && state.canvas;
         },
 
         cancel ({state, dispatch}) {
-            canvasFromJSON(state.canvas, state.template).then(() => dispatch('edit', false))
+            return canvasFromJSON(state.canvas, state.template).then(() => dispatch('edit', false))
         },
 
         activate ({state}, object) {

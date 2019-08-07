@@ -21,6 +21,9 @@
         display: inline-block;
         vertical-align: middle;
     }
+    .canvas.disabled {
+        pointer-events: none;
+    }
 
 </style>
 
@@ -31,7 +34,7 @@
 -->
 
 <template>
-    <div class="canvas" @click="deselect">
+    <div class="canvas" @click="deselect" :class="{disabled: !editing}">
         <div class="u-tile" ref="canvas"></div>
     </div>
 </template>
@@ -107,12 +110,8 @@
                 handler (value) {
                     if (!value) {
                         this.canvas.discardActiveObject();
+                        this.canvas.renderAll();
                     }
-                    this.canvas.forEachObject(object => {
-                        object.selectable = value;
-                        object.evented = value;
-                    });
-                    this.canvas.renderAll();
                 }
             }
 

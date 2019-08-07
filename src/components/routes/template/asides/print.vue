@@ -103,7 +103,6 @@
             },
 
             reset() {
-                this.canvas.setViewportTransform([1,0,0,1,0,0]);
                 this.cancel().then(() => {
                     this.active = this.canvas.getBarcode()
                 });
