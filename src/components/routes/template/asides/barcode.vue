@@ -87,7 +87,7 @@
                 if (name === 'scaleX') size = this.active.width;
                 if (name === 'scaleY') size = this.active.height;
                 this.prop(name, value / size);
-                this.active.trigger('scaling');
+                this.canvas.trigger('object:scaling', {target: this.active});
             }
 
         }

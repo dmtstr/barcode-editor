@@ -42,7 +42,7 @@ export default {
                     this.active.add(image);
                     this.active.setCoords();
                     this.canvas.requestRenderAll();
-                    this.active.trigger('scaling');
+                    this.canvas.trigger('object:scaling', {target: this.active});
                 });
             });
 

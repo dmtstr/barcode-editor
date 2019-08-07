@@ -53,10 +53,6 @@
 
     // fabric prototypes
 
-    fabric.Canvas.prototype.getBarcode = function() {
-        return this.getObjects().find(object => object.type === 'group');
-    };
-
     fabric.Object.prototype.set({
         transparentCorners: false,
         borderColor: '#3a84ff',
@@ -81,12 +77,6 @@
             'editing'
         ]),
 
-        data () {
-            return {
-                barcode: null
-            }
-        },
-
         methods: {
 
             ...mapActions('template', [
@@ -99,13 +89,13 @@
                 this.canvas.renderAll();
             },
 
-            fit () {
-                let image = this.barcode.item(0);
-                const sw = this.barcode.getScaledWidth() / image.width;
-                const sh = this.barcode.getScaledHeight() / image.height;
+            fit (barcode) {
+                let image = barcode.item(0);
+                const sw = barcode.getScaledWidth() / image.width;
+                const sh = barcode.getScaledHeight() / image.height;
                 const scale = Math.min(sw, sh);
-                image.set('scaleX', 1 / this.barcode.scaleX * scale);
-                image.set('scaleY', 1 /this.barcode.scaleY * scale);
+                image.set('scaleX', 1 / barcode.scaleX * scale);
+                image.set('scaleY', 1 / barcode.scaleY * scale);
             },
 
         },
@@ -134,8 +124,7 @@
             this.canvas.on('selection:created', object => this.activate(object.target));
             this.canvas.on('selection:updated', object => this.activate(object.target));
             this.canvas.on('selection:cleared', ({e}) => e && this.activate(this.canvas));
-            this.barcode = this.canvas.getBarcode();
-            this.barcode.on('scaling', this.fit);
+            this.canvas.on('object:scaling', event => event.target.type === 'group' && this.fit(event.target));
             this.$refs.canvas.appendChild(this.canvas.wrapperEl);
         }
 
