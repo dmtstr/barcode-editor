@@ -79,13 +79,9 @@ export default {
     call (...args) {
         const key = args.shift();
         const config = Config[key].apply(null, args);
-        const canceller = Canceller.get(key);
-        return Axios(Object.assign(config, {
-            cancelToken: canceller.token,
-            headers: {
-                'Authorization': 'Bearer ' + Store.state.session.token
-            }
-        }));
+        if (!config.sync) config.cancelToken = Canceller.get(key).token;
+        config.headers = {'Authorization': 'Bearer ' + Store.state.session.token};
+        return Axios(config);
     },
 
     abort (key) {

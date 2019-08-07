@@ -1,5 +1,5 @@
 import Axios from '@/common/modules/axios';
-const REFRESH = 3 * 60 * 1000;
+const REFRESH = 3 * 60 * 5000;
 
 
 export default {
@@ -8,7 +8,7 @@ export default {
 
     state: {
         timeout: null,
-        token: localStorage.removeItem('token')
+        token: localStorage.getItem('token')
     },
 
     actions: {
@@ -26,7 +26,7 @@ export default {
         },
 
         refresh ({state, dispatch}) {
-            return Axios.request('refresh', state.token).then(response => {
+            return Axios.call('refresh', state.token).then(response => {
                 dispatch('create', response.data.data.token)
             })
         },

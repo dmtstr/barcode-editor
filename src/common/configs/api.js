@@ -10,6 +10,7 @@ export default {
 
     refresh (token) {
         return {
+            sync: true,
             method: 'POST',
             url: '/auth/refresh',
             data: {token}
