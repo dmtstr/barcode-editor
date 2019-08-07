@@ -39,7 +39,7 @@
 -->
 
 <template>
-    <div class="toolbar u-tile">
+    <div class="toolbar u-tile" v-show="editing">
 
         <a class="action" @click="object('text')">
             <icon-text />

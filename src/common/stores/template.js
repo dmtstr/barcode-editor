@@ -127,7 +127,10 @@ export default {
         update ({state, dispatch}, name) {
             state.loading = 'Saving...';
             dispatch('edit', false);
-            return Axios.call('update', canvasToJSON(state.canvas, name), state.template.id)
+            console.log('start data')
+            const data = canvasToJSON(state.canvas, name);
+            console.log('end data')
+            return Axios.call('update',data , state.template.id)
                 .then(response => (state.template = response.data.data))
                 .catch(() => dispatch('edit', true))
                 .finally(() => state.loading = false);
