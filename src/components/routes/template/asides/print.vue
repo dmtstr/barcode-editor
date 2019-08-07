@@ -20,12 +20,12 @@
 
         <div class="u-fl field small" v-if="canvas">
             <label class="label">Width</label>
-            <ui-number :value="template.width" @change="zoom('width', $event)"/>
+            <ui-number :value="canvas.width" @change="zoom('width', $event)"/>
         </div>
 
         <div class="u-fl field small" v-if="canvas">
             <label class="label">Height</label>
-            <ui-number :value="template.height" @change="zoom('height', $event)"/>
+            <ui-number :value="canvas.height" @change="zoom('height', $event)"/>
         </div>
 
         <div class="u-fl field large">
@@ -59,6 +59,11 @@
     import barcodeMixin from '@/common/mixins/barcode'
     import uiNumber from '@/components/ui/number.vue'
     import uiSelect from '@/components/ui/select.vue'
+
+
+    fabric.Canvas.prototype.getBarcode = function() {
+        return this.getObjects().find(object => object.type === 'group');
+    };
 
 
     export default {
@@ -99,7 +104,9 @@
 
             reset() {
                 this.canvas.setViewportTransform([1,0,0,1,0,0]);
-                this.cancel();
+                this.cancel().then(() => {
+                    this.active = this.canvas.getBarcode()
+                });
             },
 
             zoom (prop, value) {
@@ -121,7 +128,7 @@
 
         },
 
-        created() {
+        created () {
             this.active = this.canvas.getBarcode();
         }
 
