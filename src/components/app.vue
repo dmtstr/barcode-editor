@@ -32,6 +32,7 @@
 <script>
 
 
+    import {mapActions} from 'vuex'
     import layoutSection from '@/components/layout/section.vue'
     import layoutToasts from '@/components/layout/toasts.vue'
 
@@ -41,6 +42,14 @@
         components: {
             layoutSection,
             layoutToasts
+        },
+
+        methods: mapActions('session', [
+            'restore'
+        ]),
+
+        mounted () {
+            this.restore();
         }
 
     }

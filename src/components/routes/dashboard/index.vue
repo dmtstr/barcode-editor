@@ -51,6 +51,7 @@
         height: 137px;
         border: 1px solid #F0F0F0;
         object-fit: contain;
+        background: #F5F7FA;
     }
     .r-dashboard .template p {
         padding-top: 12px;

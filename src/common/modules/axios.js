@@ -76,7 +76,7 @@ const Canceller = {
 
 export default {
 
-    request (...args) {
+    call (...args) {
         const key = args.shift();
         const config = Config[key].apply(null, args);
         const canceller = Canceller.get(key);
@@ -86,12 +86,6 @@ export default {
                 'Authorization': 'Bearer ' + Store.state.session.token
             }
         }));
-    },
-
-    call (...args) {
-        return Store.dispatch('session/refresh').then(() => {
-            return this.request.apply(this, args)
-        });
     },
 
     abort (key) {
