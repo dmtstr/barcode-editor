@@ -108,6 +108,7 @@ const Dev = {
 const Prod = {
 
     mode: 'production',
+    devtool: 'source-map',
 
     plugins: [
 
