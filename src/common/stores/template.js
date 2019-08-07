@@ -134,7 +134,7 @@ export default {
 
         remove ({state}) {
             state.loading = 'Deleting...';
-            Axios.call('remove', state.template.id)
+            return Axios.call('remove', state.template.id)
                 .catch(() => state.loading = false);
         },
 
