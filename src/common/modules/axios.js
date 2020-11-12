@@ -14,7 +14,7 @@ import Config from '@/common/configs/api';
 // ------------------
 
 const Axios = axios.create({
-    baseURL: API_ORIGIN
+    baseURL: '/api'
 });
 
 

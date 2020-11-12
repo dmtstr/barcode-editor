@@ -2,8 +2,8 @@ export default {
 
     login (data) {
         return {
-            method: 'POST',
-            url: '/auth/authenticate',
+            method: 'GET',
+            url: '/login.json',
             data: data
         }
     },
@@ -20,14 +20,14 @@ export default {
     list () {
         return {
             method: 'GET',
-            url: '/items/editor'
+            url: '/items.json'
         }
     },
 
     get (id) {
         return {
             method: 'GET',
-            url: '/items/editor/' + id
+            url: `/${id}.json`
         }
     },
 
